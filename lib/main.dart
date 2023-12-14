@@ -1,12 +1,12 @@
 import 'package:flame/game.dart';
 import 'package:flutter/material.dart';
 
-import 'games/UghGame.dart';
+import 'games/UghGame2.dart';
 
 void main() {
   runApp(
-    const GameWidget<UghGame>.controlled(
-      gameFactory: UghGame.new,
+    const GameWidget<UghGame2>.controlled(
+      gameFactory: UghGame2.new,
     ),
   );
 }

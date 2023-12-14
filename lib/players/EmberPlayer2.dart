@@ -1,10 +1,47 @@
 import 'package:flame/components.dart';
+import 'package:flame_forge2d/body_component.dart';
+import 'package:flame_forge2d/flame_forge2d.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 import 'package:ugh2/games/UghGame.dart';
 
+import '../games/UghGame2.dart';
+
+
+class EmberPlayer2Body extends BodyComponent{
+
+  EmberPlayer2Body({Vector2? initialPosition})
+      : super(
+    fixtureDefs: [
+      FixtureDef(
+        CircleShape()..radius = 0.1,
+        restitution: 0.8,
+        friction: 0.4,
+      ),
+    ],
+    bodyDef: BodyDef(
+      //gravityOverride: Vector2(0,-9.8),
+      angularDamping: 0.8,
+      position: initialPosition ?? Vector2.zero(),
+      type: BodyType.dynamic,
+    ),
+  );
+
+  @override
+  void onTapDown(_) {
+    body.applyLinearImpulse(Vector2.random() * 5000);
+  }
+
+  @override
+  Future<void> onLoad() {
+    // TODO: implement onLoad
+    add(EmberPlayer2(position: Vector2(0,0)));
+    return super.onLoad();
+  }
+}
+
 class EmberPlayer2 extends SpriteAnimationComponent
-    with HasGameRef<UghGame>,KeyboardHandler {
+    with HasGameRef<UghGame2>,KeyboardHandler {
 
   int horizontalDirection = 0;
   int verticalDirection = 0;

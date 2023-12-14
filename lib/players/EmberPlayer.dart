@@ -3,8 +3,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 import 'package:ugh2/games/UghGame.dart';
 
+import '../games/UghGame2.dart';
+
 class EmberPlayer extends SpriteAnimationComponent
-    with HasGameRef<UghGame>,KeyboardHandler {
+    with HasGameRef<UghGame2>,KeyboardHandler {
 
   int horizontalDirection = 0;
   int verticalDirection = 0;

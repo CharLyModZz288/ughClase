@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="50" height="40" tilewidth="32" tileheight="32" infinite="0" nextlayerid="5" nextobjectid="30">
+<map version="1.10" tiledversion="git" orientation="orthogonal" renderorder="right-down" width="50" height="40" tilewidth="32" tileheight="32" infinite="0" nextlayerid="7" nextobjectid="37">
  <tileset firstgid="1" source="tilemap1_32.tsx"/>
  <layer id="1" name="suelos" width="50" height="40">
   <data encoding="csv">
@@ -45,7 +45,7 @@
 29,29,29,29,29,29,29,29,29,29,29,29,29,29,29,29,29,29,29,29,29,30,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 </data>
  </layer>
- <objectgroup id="3" name="estrellas" visible="0">
+ <objectgroup id="3" name="estrellas">
   <object id="5" x="662.056" y="288.829">
    <point/>
   </object>
@@ -112,6 +112,17 @@
    <point/>
   </object>
   <object id="29" x="669.558" y="283.202">
+   <point/>
+  </object>
+ </objectgroup>
+ <objectgroup id="5" name="corazones">
+  <object id="31" x="50.5769" y="101.154">
+   <point/>
+  </object>
+  <object id="32" x="146.673" y="106.211">
+   <point/>
+  </object>
+  <object id="33" x="242.769" y="96.0961">
    <point/>
   </object>
  </objectgroup>
