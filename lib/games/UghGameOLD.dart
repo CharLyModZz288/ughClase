@@ -5,23 +5,20 @@ import 'package:flame/camera.dart';
 import 'package:flame/components.dart';
 import 'package:flame/events.dart';
 import 'package:flame/game.dart';
-import 'package:flame_forge2d/flame_forge2d.dart';
 import 'package:flame_tiled/flame_tiled.dart';
-import 'package:ugh2/elementos/Corazon.dart';
 import 'package:ugh2/elementos/Gota.dart';
 
+import '../elementos/Corazon.dart';
 import '../elementos/Estrella.dart';
 import '../players/EmberPlayer.dart';
-import '../players/EmberPlayer2.dart';
 
-class UghGame2 extends Forge2DGame with HasKeyboardHandlerComponents{
+class UghGameOLD extends FlameGame with HasKeyboardHandlerComponents{
 
-  //final world = World();
+  final world = World();
   late final CameraComponent cameraComponent;
-  late EmberPlayer _player;
-  late EmberPlayer2 _player2;
-  late EmberPlayer2Body _playerBody2;
+  late EmberPlayer _player,_player2;
   late TiledComponent mapComponent;
+  double wScale=1.0,hScale=1.0;
 
 
   @override
@@ -36,6 +33,9 @@ class UghGame2 extends Forge2DGame with HasKeyboardHandlerComponents{
       'tilemap1_32.png'
     ]);
     cameraComponent = CameraComponent(world: world);
+    // Everything in this tutorial assumes that the position
+    // of the `CameraComponent`s viewfinder (where the camera is looking)
+    // is in the top left corner, that's why we set the anchor here.
     cameraComponent.viewfinder.anchor = Anchor.topLeft;
     addAll([cameraComponent, world]);
 
@@ -61,25 +61,18 @@ class UghGame2 extends Forge2DGame with HasKeyboardHandlerComponents{
 
     for(final corazon in corazones!.objects){
       Corazon spriteCorazon = Corazon(position: Vector2(corazon.x,corazon.y),
-          size: Vector2.all(64));
+          size: Vector2(64*wScale,64*hScale));
       add(spriteCorazon);
     }
 
-    _player = EmberPlayer(position: Vector2(128, canvasSize.y - 150),
+    /*_player = EmberPlayer(position: Vector2(128, canvasSize.y - 150,),
+      iTipo: EmberPlayer.I_PLAYER_TANYA,
+    );*/
 
-    );
-
-    _player2 = EmberPlayer2(position: Vector2(328, canvasSize.y - 150),
-
-    );
+    //_player2 = EmberPlayer(position: Vector2(328, canvasSize.y - 150),);
 
     world.add(_player);
     //world.add(_player2);
-
-    _playerBody2=EmberPlayer2Body(initialPosition: Vector2(328, canvasSize.y - 150));
-    world.add(_playerBody2);
-    //world.add(EmberPlayer2Body(initialPosition: Vector2(30,30)));
-
   }
   
   @override
