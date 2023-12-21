@@ -1,26 +1,24 @@
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
+import 'package:flame_forge2d/body_component.dart';
+import 'package:flame_forge2d/flame_forge2d.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:ugh2/elementos/Estrella.dart';
 import 'package:ugh2/games/UghGame.dart';
 
-import '../elementos/Estrella.dart';
-import '../games/UghGame2.dart';
+import '../elementos/Gota.dart';
 
 class EmberPlayer extends SpriteAnimationComponent
-    with HasGameRef<UghGame2>,KeyboardHandler,CollisionCallbacks {
+    with HasGameRef<UghGame> {
 
-  int horizontalDirection = 0;
-  int verticalDirection = 0;
-  //LEYES DE NEWTON v=a*t
-  //LEYES DE NEWTON d=v*t
-  final Vector2 velocidad = Vector2.zero();
-  final double aceleracion = 200;
-  late CircleHitbox hitbox;
+  late int iTipo=-1;
 
   EmberPlayer({
-    required super.position,
-  }) : super(size: Vector2(100,160), anchor: Anchor.center);
+    required super.position,required this.iTipo
+    ,required super.size
+  }) : super( anchor: Anchor.center);
 
   @override
   void onLoad() {
@@ -33,55 +31,109 @@ class EmberPlayer extends SpriteAnimationComponent
         stepTime: 0.12,
       ),
     );
-    hitbox=CircleHitbox();
-    add(hitbox);
+
   }
+}
+
+class EmberPlayerBody extends BodyComponent with KeyboardHandler{
+  final Vector2 velocidad = Vector2.zero();
+  final double aceleracion = 200;
+  final Set<LogicalKeyboardKey> magiaSubZero={LogicalKeyboardKey.arrowDown, LogicalKeyboardKey.keyA};
+  final Set<LogicalKeyboardKey> magiaScorpio={LogicalKeyboardKey.arrowUp, LogicalKeyboardKey.keyK};
+  late int iTipo=-1;
+  late Vector2 tamano;
+  int horizontalDirection = 0;
+  int verticalDirection = 0;
+  static const  int I_PLAYER_SUBZERO=0;
+  static const  int I_PLAYER_SCORPIO=1;
+  static const  int I_PLAYER_TANYA=2;
+  final _defaultColor = Colors.red;
+  late EmberPlayer emberPlayer;
+  late double jumpSpeed=0.0;
+
+  EmberPlayerBody({Vector2? initialPosition,required this.iTipo,
+    required this.tamano})
+      : super(
+    fixtureDefs: [
+      FixtureDef(
+        CircleShape()..radius = tamano.x/2,
+        restitution: 0.8,
+        friction: 0.4,
+      ),
+    ],
+    bodyDef: BodyDef(
+      angularDamping: 0.8,
+      position: initialPosition ?? Vector2.zero(),
+      type: BodyType.dynamic,
+    ),
+  );
+
+
   @override
-  void onCollision(Set<Vector2> intersectionPoints, PositionComponent other) {
-    if(other is Estrella){
-      other.removeFromParent();
-    }
-    super.onCollision(intersectionPoints, other);
+  Future<void> onLoad() {
+    // TODO: implement onLoad
+    emberPlayer=EmberPlayer(position: Vector2(0,0),iTipo: iTipo,size:tamano);
+    add(emberPlayer);
+    return super.onLoad();
+  }
+
+  @override
+  void onTapDown(_) {
+    body.applyLinearImpulse(Vector2.random() * 5000);
   }
 
   @override
   bool onKeyEvent(RawKeyEvent event, Set<LogicalKeyboardKey> keysPressed) {
-    // TODO: implement onKeyEvent
-    horizontalDirection=0;
-    verticalDirection=0;
-    if(keysPressed.contains(LogicalKeyboardKey.arrowRight)){
+    horizontalDirection = 0;
+    verticalDirection = 0;
+
+    if((keysPressed.contains(LogicalKeyboardKey.keyA))){
+      horizontalDirection=-1;
+    }
+    else if((keysPressed.contains(LogicalKeyboardKey.keyD))){
       horizontalDirection=1;
     }
 
-    else if(keysPressed.contains(LogicalKeyboardKey.arrowLeft)){
-      horizontalDirection=-1;
-    }
 
-    else if(keysPressed.contains(LogicalKeyboardKey.arrowUp)){
+    if((keysPressed.contains(LogicalKeyboardKey.keyW))){
       verticalDirection=-1;
     }
-
-    else if(keysPressed.contains(LogicalKeyboardKey.arrowDown)){
+    else if((keysPressed.contains(LogicalKeyboardKey.keyS))){
       verticalDirection=1;
-    }
-
-    else{
-      horizontalDirection=0;
     }
 
     return true;
   }
 
-
   @override
   void update(double dt) {
     // TODO: implement update
-    velocidad.x = horizontalDirection * aceleracion; //v=a*t
-    position += velocidad * dt; //d=v*t
+    /*velocidad.x = horizontalDirection * aceleracion; //v=a*t
     velocidad.y = verticalDirection * aceleracion; //v=a*t
-    position += velocidad * dt; //d=v*t
+    //position += velocidad * dt; //d=v*t
+
+    position.x += velocidad.x * dt; //d=v*t
+    position.y += velocidad.y * dt; //d=v*t*/
+
+    velocidad.x = horizontalDirection * aceleracion;
+    velocidad.y = verticalDirection * aceleracion;
+    velocidad.y += -1 * jumpSpeed;
+
+    print("--------->>>>>>>>> ${velocidad}");
+
+    body.applyLinearImpulse(velocidad*dt*1000);
+    //body.applyAngularImpulse(3);
+
+    if (horizontalDirection < 0 && emberPlayer.scale.x > 0) {
+      //flipAxisDirection(AxisDirection.left);
+      //flipAxis(Axis.horizontal);
+      emberPlayer.flipHorizontallyAroundCenter();
+    } else if (horizontalDirection > 0 && emberPlayer.scale.x < 0) {
+      //flipAxisDirection(AxisDirection.left);
+      emberPlayer.flipHorizontallyAroundCenter();
+    }
+
     super.update(dt);
   }
-
 
 }
