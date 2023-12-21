@@ -1,12 +1,14 @@
+import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 import 'package:ugh2/games/UghGame.dart';
 
+import '../elementos/Estrella.dart';
 import '../games/UghGame2.dart';
 
 class EmberPlayer extends SpriteAnimationComponent
-    with HasGameRef<UghGame2>,KeyboardHandler {
+    with HasGameRef<UghGame2>,KeyboardHandler,CollisionCallbacks {
 
   int horizontalDirection = 0;
   int verticalDirection = 0;
@@ -14,6 +16,7 @@ class EmberPlayer extends SpriteAnimationComponent
   //LEYES DE NEWTON d=v*t
   final Vector2 velocidad = Vector2.zero();
   final double aceleracion = 200;
+  late CircleHitbox hitbox;
 
   EmberPlayer({
     required super.position,
@@ -30,6 +33,15 @@ class EmberPlayer extends SpriteAnimationComponent
         stepTime: 0.12,
       ),
     );
+    hitbox=CircleHitbox();
+    add(hitbox);
+  }
+  @override
+  void onCollision(Set<Vector2> intersectionPoints, PositionComponent other) {
+    if(other is Estrella){
+      other.removeFromParent();
+    }
+    super.onCollision(intersectionPoints, other);
   }
 
   @override
