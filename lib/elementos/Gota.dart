@@ -2,10 +2,9 @@
 import 'package:flame/components.dart';
 
 import '../games/UghGame.dart';
-import '../games/UghGame2.dart';
 
 class Gota extends SpriteAnimationComponent
-    with HasGameRef<UghGame2>{
+    with HasGameRef<UghGame>{
 
   Gota({
     required super.position, required super.size
