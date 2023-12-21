@@ -43,25 +43,13 @@ class UghGame extends Forge2DGame with
       'tilemap1_32.png'
     ]);
     cameraComponent = CameraComponent(world: world);
-    //cameraComponent = CameraComponent(world: world);
-    /*cameraComponent = CameraComponent.withFixedResolution(
-      width: gameWidth,
-      height: gameHeight,
-    );*/
     wScale=size.x/gameWidth;
     hScale=size.y/gameHeight;
 
     
 
 
-    /*final cameraComponent = CameraComponent.withFixedResolution(
-      world: world,
-      width: 900,
-      height: 600,
-    );*/
-    // Everything in this tutorial assumes that the position
-    // of the `CameraComponent`s viewfinder (where the camera is looking)
-    // is in the top left corner, that's why we set the anchor here.
+
     cameraComponent.viewfinder.anchor = Anchor.topLeft;
     addAll([cameraComponent, world]);
 
@@ -106,13 +94,10 @@ class UghGame extends Forge2DGame with
       size: Vector2(50,100)
     );
 
-    //_player2 = EmberPlayer(position: Vector2(328, canvasSize.y - 150),);
 
     add(_player);
     add(_player2);
-    //add(EmberPlayerBody(vector2Tamano: Vector2(40, 40,)));
-    //camera.viewport = FixedResolutionViewport(resolution: Vector2(600, 300));
-    //world.add(_player2);
+
   }
   
   @override

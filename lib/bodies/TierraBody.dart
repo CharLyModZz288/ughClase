@@ -55,8 +55,6 @@ class TierraBody extends BodyComponent{
           type: BodyType.static);
     Body cuerpo= world.createBody(definicionCuerpo);
 
-
-    //FixtureDef fixtureDef=FixtureDef(shape);
     cuerpo.createFixture(fixtureDef);
     return cuerpo;
 

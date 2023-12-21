@@ -33,9 +33,6 @@ class UghGameOLD extends FlameGame with HasKeyboardHandlerComponents{
       'tilemap1_32.png'
     ]);
     cameraComponent = CameraComponent(world: world);
-    // Everything in this tutorial assumes that the position
-    // of the `CameraComponent`s viewfinder (where the camera is looking)
-    // is in the top left corner, that's why we set the anchor here.
     cameraComponent.viewfinder.anchor = Anchor.topLeft;
     addAll([cameraComponent, world]);
 
@@ -64,15 +61,7 @@ class UghGameOLD extends FlameGame with HasKeyboardHandlerComponents{
           size: Vector2(64*wScale,64*hScale));
       add(spriteCorazon);
     }
-
-    /*_player = EmberPlayer(position: Vector2(128, canvasSize.y - 150,),
-      iTipo: EmberPlayer.I_PLAYER_TANYA,
-    );*/
-
-    //_player2 = EmberPlayer(position: Vector2(328, canvasSize.y - 150),);
-
     world.add(_player);
-    //world.add(_player2);
   }
   
   @override

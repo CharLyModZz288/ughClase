@@ -56,7 +56,7 @@ class EmberPlayerBody extends BodyComponent with KeyboardHandler{
       : super(
     fixtureDefs: [
       FixtureDef(
-        CircleShape()..radius = tamano.x/2,
+        CircleShape()..radius = tamano.x/4,
         restitution: 0.8,
         friction: 0.4,
       ),
@@ -108,28 +108,15 @@ class EmberPlayerBody extends BodyComponent with KeyboardHandler{
   @override
   void update(double dt) {
     // TODO: implement update
-    /*velocidad.x = horizontalDirection * aceleracion; //v=a*t
-    velocidad.y = verticalDirection * aceleracion; //v=a*t
-    //position += velocidad * dt; //d=v*t
-
-    position.x += velocidad.x * dt; //d=v*t
-    position.y += velocidad.y * dt; //d=v*t*/
-
     velocidad.x = horizontalDirection * aceleracion;
     velocidad.y = verticalDirection * aceleracion;
     velocidad.y += -1 * jumpSpeed;
 
-    print("--------->>>>>>>>> ${velocidad}");
-
     body.applyLinearImpulse(velocidad*dt*1000);
-    //body.applyAngularImpulse(3);
 
     if (horizontalDirection < 0 && emberPlayer.scale.x > 0) {
-      //flipAxisDirection(AxisDirection.left);
-      //flipAxis(Axis.horizontal);
       emberPlayer.flipHorizontallyAroundCenter();
     } else if (horizontalDirection > 0 && emberPlayer.scale.x < 0) {
-      //flipAxisDirection(AxisDirection.left);
       emberPlayer.flipHorizontallyAroundCenter();
     }
 
