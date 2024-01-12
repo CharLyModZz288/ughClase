@@ -50,6 +50,8 @@ class EmberPlayerBody extends BodyComponent with KeyboardHandler{
   final _defaultColor = Colors.red;
   late EmberPlayer emberPlayer;
   late double jumpSpeed=0.0;
+ // Vector2 initialPosition;
+  bool blEspacioLiberado=true;
 
   EmberPlayerBody({Vector2? initialPosition,required this.iTipo,
     required this.tamano})
@@ -86,23 +88,33 @@ class EmberPlayerBody extends BodyComponent with KeyboardHandler{
   bool onKeyEvent(RawKeyEvent event, Set<LogicalKeyboardKey> keysPressed) {
     horizontalDirection = 0;
     verticalDirection = 0;
+    final bool isKeyDown= event is RawKeyDownEvent;
+    final bool isKeyUp= event is RawKeyUpEvent;
 
-    if((keysPressed.contains(LogicalKeyboardKey.keyA))){
-      horizontalDirection=-1;
-    }
-    else if((keysPressed.contains(LogicalKeyboardKey.keyD))){
-      horizontalDirection=1;
-    }
+    if(isKeyDown) {
+      if ((keysPressed.contains(LogicalKeyboardKey.keyA))) {
+        horizontalDirection = -1;
+      }
+      else if ((keysPressed.contains(LogicalKeyboardKey.keyD))) {
+        horizontalDirection = 1;
+      }
 
 
-    if((keysPressed.contains(LogicalKeyboardKey.keyW))){
-      verticalDirection=-1;
+      if ((keysPressed.contains(LogicalKeyboardKey.keyW))) {
+        verticalDirection = -1;
+      }
+      else if ((keysPressed.contains(LogicalKeyboardKey.keyS))) {
+        verticalDirection = 1;
+      }
+      if (isKeyUp) {
+        blEspacioLiberado=true;
+        //body.gravityOverride = Vector2(0, -20);
+      }else if(keysPressed.contains(LogicalKeyboardKey.space)){
+          if(blEspacioLiberado)jumpSpeed=500;
+          blEspacioLiberado=false;
+      }
     }
-    else if((keysPressed.contains(LogicalKeyboardKey.keyS))){
-      verticalDirection=1;
-    }
-
-    return true;
+      return true;
   }
 
   @override
